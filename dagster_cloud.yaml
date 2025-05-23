@@ -1,3 +1,4 @@
-workspace:
-  load_from:
-    - python_file: __init__.py
+locations:
+  - location_name: hockey_stats_project
+    code_source:
+      python_file: __init__.py
