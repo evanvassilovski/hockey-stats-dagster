@@ -5,4 +5,4 @@ pandas
 sqlalchemy
 numpy
 dotenv
-lxml
+lxml==4.9.3
