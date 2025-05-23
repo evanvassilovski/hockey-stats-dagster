@@ -1,11 +1,12 @@
 import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
-from db import engine
+from db import get_engine
 from sqlalchemy import text
 
 def query_to_dataframe(query, params=None):
     try:
+        engine = get_engine()
         with engine.connect() as conn:
             raw_conn = conn.connection
             if params:

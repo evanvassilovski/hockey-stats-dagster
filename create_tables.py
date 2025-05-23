@@ -1,5 +1,7 @@
 from sqlalchemy import Table, Column, String, Date, MetaData, Integer, Float, PrimaryKeyConstraint
-from db import engine
+from db import get_engine
+
+engine = get_engine()
 
 metadata = MetaData()
 

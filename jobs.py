@@ -1,5 +1,5 @@
 import pandas as pd
-from db import engine
+from db import get_engine
 from main import getScores, getSkaterStats, getGoalieStats, query_to_dataframe
 from dagster import job, op, Field, String, execute_job
 from sqlalchemy import MetaData, Table, text
@@ -27,6 +27,7 @@ def load_to_db(context, df: pd.DataFrame):
         context.log.info(f"Skipping load - empty DataFrame for {table_name}")
         return
     try:
+        engine = get_engine()
         with engine.begin() as conn:
             # Reflect the existing table structure
             metadata = MetaData()
