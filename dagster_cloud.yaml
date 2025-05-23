@@ -1,0 +1,3 @@
+workspace:
+  load_from:
+    - python_file: __init__.py
