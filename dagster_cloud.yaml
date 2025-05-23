@@ -2,3 +2,5 @@ locations:
   - location_name: hockey_stats_project
     code_source:
       python_file: __init__.py
+    env_vars:
+      - DATABASE_URL
