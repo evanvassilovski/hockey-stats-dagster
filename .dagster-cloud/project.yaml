@@ -6,4 +6,4 @@ locations:
       - DATABASE_URL
 
 python:
-  requirements_txt_path: requirements.txt
+  requirements_file: requirements.txt
