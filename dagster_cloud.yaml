@@ -4,3 +4,6 @@ locations:
       python_file: __init__.py
     env_vars:
       - DATABASE_URL
+
+python:
+  requirements_txt_path: requirements.txt
