@@ -1,0 +1,9 @@
+dagster
+dagster-cloud
+dagster-webserver
+pandas
+sqlalchemy
+numpy
+datetime
+os
+dotenv
