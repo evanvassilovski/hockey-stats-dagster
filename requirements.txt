@@ -1,8 +1,9 @@
+--no-cache-dir
+html5lib
+numpy
+pandas
+sqlalchemy
+dotenv
 dagster
 dagster-cloud
 dagster-webserver
-pandas
-sqlalchemy
-numpy
-dotenv
-html5lib
