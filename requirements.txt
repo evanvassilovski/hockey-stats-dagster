@@ -5,4 +5,4 @@ pandas
 sqlalchemy
 numpy
 dotenv
-lxml==4.9.3
+html5lib

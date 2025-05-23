@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 import numpy as np
 from db import get_engine
 from sqlalchemy import text
-import lxml
 
 def query_to_dataframe(query, params=None):
     try:
@@ -41,7 +40,7 @@ schedule_url = 'https://www.cbssports.com/nhl/schedule/' + cur_date + '/'
 # Load Scores
 
 def getScores(url, historic_urls):
-    table = pd.read_html(schedule_url)[0]
+    table = pd.read_html(schedule_url, flavor='html5lib')[0]
     table = table[['Away', 'Home', 'Result']]
     conditions = [
         table['Result'].str.contains(r'\bOT\b', case=False, na=False),
@@ -91,7 +90,7 @@ def getSkaterStats(table):
         daily_skaters = pd.DataFrame({})
 
         for link in urls:
-            tables = pd.read_html(link)
+            tables = pd.read_html(link, flavor='html5lib')
             tables = tables[1:4:2]
             road_skaters = tables[0]
             home_skaters = tables[1]
@@ -151,7 +150,7 @@ def getGoalieStats(table):
         daily_goalies = pd.DataFrame({})
 
         for link in urls:
-            tables = pd.read_html(link)
+            tables = pd.read_html(link, flavor='html5lib')
             tables = tables[5:8:2]
             road_goalies = tables[0]
             home_goalies = tables[1]
