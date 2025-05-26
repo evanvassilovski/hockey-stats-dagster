@@ -40,7 +40,7 @@ schedule_url = 'https://www.cbssports.com/nhl/schedule/' + cur_date + '/'
 # Load Scores
 
 def getScores(url, historic_urls):
-    table = pd.read_html(schedule_url)[0]
+    table = pd.read_html(url)[0]
     table = table[['Away', 'Home', 'Result']]
     conditions = [
         table['Result'].str.contains(r'\bOT\b', case=False, na=False),
