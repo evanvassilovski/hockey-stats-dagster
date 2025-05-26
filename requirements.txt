@@ -1,0 +1,8 @@
+lxml
+numpy
+pandas
+sqlalchemy
+python-dotenv
+dagster
+dagster-cloud
+dagster-webserver
