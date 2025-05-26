@@ -4,6 +4,15 @@ from main import getScores, getSkaterStats, getGoalieStats, query_to_dataframe
 from dagster import job, op, Field, String, execute_job
 from sqlalchemy import MetaData, Table, text
 
+import sys
+from lxml import html
+
+@op
+def check_env():
+    print("Python executable:", sys.executable)
+    print("lxml version:", html.__version__)
+    return True
+
 @op
 def get_schedule_data() -> pd.DataFrame:
     cur_date = pd.Timestamp.now() - pd.Timedelta(days=1)
