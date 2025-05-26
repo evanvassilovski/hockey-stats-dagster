@@ -5,6 +5,14 @@ from dagster import job, op, Field, String, execute_job
 from sqlalchemy import MetaData, Table, text
 
 @op
+def debug_imports():
+    import sys
+    import lxml
+    from lxml import html
+    print(f"sys.executable = {sys.executable}")
+    print(f"lxml.__file__ = {lxml.__file__}")
+
+@op
 def get_schedule_data() -> pd.DataFrame:
     cur_date = pd.Timestamp.now() - pd.Timedelta(days=1)
     cur_date = cur_date.strftime('%Y%m%d')
@@ -50,6 +58,7 @@ load_goalie_stats = load_to_db.alias("load_goalie_stats")
 
 @job
 def pipeline():
+    debug_imports()
     schedule = get_schedule_data()
     skater_stats = get_skater_stats(schedule)
     goalie_stats = get_goalie_stats(schedule)
