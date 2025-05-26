@@ -81,7 +81,7 @@ def getScores(url, historic_urls):
         table = table[table['URL'].isin(historic_urls['URL'])==False]
     return table
 
-daily_schedule = getScores(schedule_url, historic_urls)
+# daily_schedule = getScores(schedule_url, historic_urls)
 
 def getSkaterStats(table):
     # Get Box Score Data
@@ -187,5 +187,5 @@ def getGoalieStats(table):
     
     return daily_goalies
 
-daily_skaters = getSkaterStats(daily_schedule)
-daily_goalies = getGoalieStats(daily_schedule)
+# daily_skaters = getSkaterStats(daily_schedule)
+# daily_goalies = getGoalieStats(daily_schedule)
