@@ -2,8 +2,6 @@ locations:
   - location_name: hockey_stats_project
     code_source:
       python_file: __init__.py
-    env_vars:
-      - DATABASE_URL
 
 python:
-  use_setup_py: true
+  requirements_file: requirements.txt
