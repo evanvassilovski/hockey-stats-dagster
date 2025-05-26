@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import numpy as np
 from db import get_engine
 from sqlalchemy import text
+from lxml import html
 
 def query_to_dataframe(query, params=None):
     try:
