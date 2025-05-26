@@ -2,7 +2,6 @@ locations:
   - location_name: hockey_stats_project
     code_source:
       python_file: __init__.py
-      working_directory: C:\Users\evvas\OneDrive\Documents\Project\Hockey Engineering\hockey_stats_project\hockey_stats_project\.dagster_env
     env_vars:
       - DATABASE_URL
 
