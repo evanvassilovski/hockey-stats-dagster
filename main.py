@@ -41,46 +41,51 @@ schedule_url = 'https://www.cbssports.com/nhl/schedule/' + cur_date + '/'
 # Load Scores
 
 def getScores(url, historic_urls):
-    table = pd.read_html(url)[0]
-    table = table[['Away', 'Home', 'Result']]
-    conditions = [
-        table['Result'].str.contains(r'\bOT\b', case=False, na=False),
-        table['Result'].str.contains(r'\bSO\b', case=False, na=False)
-    ]
-    choices = [1, 2]
+    try:
+        table = pd.read_html(url)[0]
+        table = table[['Away', 'Home', 'Result']]
+        conditions = [
+            table['Result'].str.contains(r'\bOT\b', case=False, na=False),
+            table['Result'].str.contains(r'\bSO\b', case=False, na=False)
+        ]
+        choices = [1, 2]
 
-    table['Final_Code'] = np.select(conditions, choices, default=0)
+        table['Final_Code'] = np.select(conditions, choices, default=0)
 
-    table['Result'] = table['Result'].str.replace(r' / (OT|SO)', '', regex=True)
+        table['Result'] = table['Result'].str.replace(r' / (OT|SO)', '', regex=True)
 
-    split_scores = table['Result'].str.split(' - ')
+        split_scores = table['Result'].str.split(' - ')
 
-    score_df = split_scores.apply(pd.Series)
-    score_df.columns = ['Win_Team', 'Lose_Team']
+        score_df = split_scores.apply(pd.Series)
+        score_df.columns = ['Win_Team', 'Lose_Team']
 
-    score_df[['Win_Team_Name', 'Win_Team_Score']] = score_df['Win_Team'].str.extract(r'(\w+)\s+(\d+)')
-    score_df[['Lose_Team_Name', 'Lose_Team_Score']] = score_df['Lose_Team'].str.extract(r'(\w+)\s+(\d+)')
-    score_df = score_df[['Win_Team_Name', 'Win_Team_Score', 'Lose_Team_Name', 'Lose_Team_Score']]
-    win_df = score_df[['Win_Team_Name', 'Win_Team_Score']].copy()
-    win_df.columns=['Codes', 'Score']
-    lose_df = score_df[['Lose_Team_Name', 'Lose_Team_Score']].copy()
-    lose_df.columns=['Codes', 'Score']
-    score_df = pd.concat([win_df, lose_df], ignore_index=True)
+        score_df[['Win_Team_Name', 'Win_Team_Score']] = score_df['Win_Team'].str.extract(r'(\w+)\s+(\d+)')
+        score_df[['Lose_Team_Name', 'Lose_Team_Score']] = score_df['Lose_Team'].str.extract(r'(\w+)\s+(\d+)')
+        score_df = score_df[['Win_Team_Name', 'Win_Team_Score', 'Lose_Team_Name', 'Lose_Team_Score']]
+        win_df = score_df[['Win_Team_Name', 'Win_Team_Score']].copy()
+        win_df.columns=['Codes', 'Score']
+        lose_df = score_df[['Lose_Team_Name', 'Lose_Team_Score']].copy()
+        lose_df.columns=['Codes', 'Score']
+        score_df = pd.concat([win_df, lose_df], ignore_index=True)
 
-    table = pd.merge(table, team_codes.rename(columns={'Teams':'Away', 'Codes':'Away_Codes'}), on=['Away'], how='left')
-    table = pd.merge(table, team_codes.rename(columns={'Teams':'Home', 'Codes':'Home_Codes'}), on=['Home'], how='left')
+        table = pd.merge(table, team_codes.rename(columns={'Teams':'Away', 'Codes':'Away_Codes'}), on=['Away'], how='left')
+        table = pd.merge(table, team_codes.rename(columns={'Teams':'Home', 'Codes':'Home_Codes'}), on=['Home'], how='left')
 
-    table = pd.merge(table, score_df.rename(columns={'Score':'Away_Score', 'Codes':'Away_Codes'}), on=['Away_Codes'], how='left')
-    table = pd.merge(table, score_df.rename(columns={'Score':'Home_Score', 'Codes':'Home_Codes'}), on=['Home_Codes'], how='left')
-    table = table[['Away', 'Home', 'Away_Score', 'Home_Score', 'Final_Code', 'Away_Codes', 'Home_Codes']]
-    table['Date'] = cur_date
+        table = pd.merge(table, score_df.rename(columns={'Score':'Away_Score', 'Codes':'Away_Codes'}), on=['Away_Codes'], how='left')
+        table = pd.merge(table, score_df.rename(columns={'Score':'Home_Score', 'Codes':'Home_Codes'}), on=['Home_Codes'], how='left')
+        table = table[['Away', 'Home', 'Away_Score', 'Home_Score', 'Final_Code', 'Away_Codes', 'Home_Codes']]
+        table['Date'] = cur_date
 
-    table['URL'] = 'https://www.cbssports.com/nhl/gametracker/boxscore/NHL_' + table['Date'] + '_' + table['Away_Codes'] + '@' + table['Home_Codes'] + '/'
-    table.columns
-    table = table.drop(columns=['Away_Codes', 'Home_Codes'])
-    if len(historic_urls) > 0:
-        table = table[table['URL'].isin(historic_urls['URL'])==False]
-    return table
+        table['URL'] = 'https://www.cbssports.com/nhl/gametracker/boxscore/NHL_' + table['Date'] + '_' + table['Away_Codes'] + '@' + table['Home_Codes'] + '/'
+        table.columns
+        table = table.drop(columns=['Away_Codes', 'Home_Codes'])
+        if len(historic_urls) > 0:
+            table = table[table['URL'].isin(historic_urls['URL'])==False]
+        return table
+    except Exception as e:
+        print('Error, no games today')
+        table = pd.DataFrame({})
+        return table
 
 # daily_schedule = getScores(schedule_url, historic_urls)
 
