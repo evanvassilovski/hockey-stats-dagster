@@ -6,3 +6,4 @@ python-dotenv
 dagster
 dagster-cloud
 dagster-webserver
+psycopg2-binary
